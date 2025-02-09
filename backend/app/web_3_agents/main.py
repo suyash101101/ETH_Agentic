@@ -12,7 +12,6 @@ class Web3AgentManager:
         
     def initialize_agents(self, function_names: List[str], wallet_id: Optional[str] = None) -> OnChainAgents:
         """Initialize agents based on wallet_id, function_names, and optionally wallet_address"""
-        self.agents = []
         if wallet_id:
             # Load existing agent using wallet_address
             agent = load_agent(wallet_id=wallet_id, functions=function_names)
@@ -23,7 +22,6 @@ class Web3AgentManager:
             agent = load_agent(functions=function_names)
             print(f"Initialized new agent with wallet ID: {wallet_id} and functions: {function_names}")
 
-        self.agents.append(agent)
         return agent
 
     def create_agents(self, prompt: str) -> List[OnChainAgents]:
@@ -39,16 +37,23 @@ class Web3AgentManager:
             # Clear existing agents
             self.agents = []
             
+            # Create a list to store all created agents
+            created_agents = []
+            
             for func_list in functions:
                 try:
                     if isinstance(func_list, list):
                         agent_name = f"agent{agent_counter}"
-                        # Create a new agent without a wallet address
-                        self.initialize_agents(function_names=func_list)
+                        # Create a new agent and append it to the list
+                        agent = self.initialize_agents(function_names=func_list)
+                        created_agents.append(agent)
                         agent_counter += 1
                 except Exception as e:
                     print(f"Error creating agent: {str(e)}")
                     continue
+            
+            # Update the class's agents list with all created agents
+            self.agents = created_agents
             
             print(f"\nManager {self._instance_id} created {len(self.agents)} agents")
             return self.agents

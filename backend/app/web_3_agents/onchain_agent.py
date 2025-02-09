@@ -178,11 +178,14 @@ def load_agent(wallet_id: Optional[str] = None, functions: Optional[List[str]] =
             Parameters:
             name (str): The name of the token
             symbol (str): The symbol of the token
-            initial_supply (int): The initial supply of tokens
+            initial_supply (int): The initial supply of tokens and should be input as integers
             
             Returns:
             str: A message confirming the token creation with details
             """
+            print(type(initial_supply))
+            initial_supply = int(initial_supply)
+            print(type(initial_supply))
             deployed_contract = agent.wallet.deploy_token(name, symbol, initial_supply)
             deployed_contract.wait()
             return f"Token {name} ({symbol}) created with initial supply of {initial_supply} and contract address {deployed_contract.contract_address}"
