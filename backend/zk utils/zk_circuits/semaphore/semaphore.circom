@@ -1,9 +1,9 @@
 pragma circom 2.1.5;
 
-include "babyjub.circom";
-include "poseidon.circom";
-include "binary-merkle-root.circom";
-include "comparators.circom";
+include "./circomlib/circuits/babyjub.circom";
+include "./circomlib/circuits/poseidon.circom";
+include "@zk-kit/binary-merkle-root.circom/src/binary-merkle-root.circom";
+include "./circomlib/circuits/comparators.circom";
 
 // The Semaphore circuit can be divided into 3 main parts.
 // The first part involves the generation of the Semaphore identity,

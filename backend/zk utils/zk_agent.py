@@ -11,14 +11,14 @@ CIRCUITS_DIR='zk_circuits'
 
 CIRCUITS_DICT = {
     "AnonAadhar": {
-        "entry_point": "aadhaar-qr-verifier.circom",
+        "entry_point": "aadhaar-verifier.circom",
         "use_case": "Verifies Aadhaar QR data using RSA signature",
         "inputs" : {
-            'qrDataPadded': { 'type': 'array', 'label': 'QR Data Padded', 'description': 'QR data without the signature, padded with 0', 'length': 'maxDataLength' },
+            'qrDataPadded': { 'type': 'text', 'label': 'QR Data Padded', 'description': 'QR data without the signature, padded with 0', 'length': 'maxDataLength' },
             'qrDataPaddedLength': { 'type': 'number', 'label': 'QR Data Padded Length', 'description': 'Length of padded QR data' },
-            'delimiterIndices': { 'type': 'array', 'label': 'Delimiter Indices', 'description': 'Indices of delimiters (255) in the QR text data', 'length': 18 },
-            'signature': { 'type': 'array', 'label': 'Signature', 'description': 'RSA signature', 'length': 'k' },
-            'pubKey': { 'type': 'array', 'label': 'Public Key', 'description': 'RSA public key (of the government)', 'length': 'k' },
+            'delimiterIndices': { 'type': 'text', 'label': 'Delimiter Indices', 'description': 'Indices of delimiters (255) in the QR text data', 'length': 18 },
+            'signature': { 'type': 'text', 'label': 'Signature', 'description': 'RSA signature', 'length': 'k' },
+            'pubKey': { 'type': 'text', 'label': 'Public Key', 'description': 'RSA public key (of the government)', 'length': 'k' },
             'revealAgeAbove18': { 'type': 'number', 'label': 'Reveal Age Above 18', 'description': 'Flag to reveal age is above 18' },
             'revealGender': { 'type': 'number', 'label': 'Reveal Gender', 'description': 'Flag to reveal extracted gender' },
             'revealPinCode': { 'type': 'number', 'label': 'Reveal Pin Code', 'description': 'Flag to reveal extracted pin code' },
@@ -50,8 +50,8 @@ CIRCUITS_DICT = {
             'identitySecret': { 'type': 'number', 'label': 'Identity Secret', 'description': 'Secret identity of the user' },
             'userMessageLimit': { 'type': 'number', 'label': 'User Message Limit', 'description': 'Limit on the number of messages a user can send' },
             'messageId': { 'type': 'number', 'label': 'Message ID', 'description': 'Identifier for the message' },
-            'pathElements': { 'type': 'array', 'label': 'Path Elements', 'description': 'Elements of the Merkle tree path', 'length': 'DEPTH' },
-            'identityPathIndex': { 'type': 'array', 'label': 'Identity Path Index', 'description': 'Index of the identity path in the Merkle tree', 'length': 'DEPTH' },
+            'pathElements': { 'type': 'text', 'label': 'Path Elements', 'description': 'Elements of the Merkle tree path', 'length': 'DEPTH' },
+            'identityPathIndex': { 'type': 'text', 'label': 'Identity Path Index', 'description': 'Index of the identity path in the Merkle tree', 'length': 'DEPTH' },
             'x': { 'type': 'number', 'label': 'X', 'description': 'Public input X' },
             'externalNullifier': { 'type': 'number', 'label': 'External Nullifier', 'description': 'External nullifier for the circuit' }
         },
@@ -72,21 +72,21 @@ CIRCUITS_DICT = {
         "inputs" : {
             'secret': { 'type': 'number', 'label': 'Secret', 'description': 'Secret of the user — used to reconstruct commitment and generate nullifier' },
             'attestation_id': { 'type': 'number', 'label': 'Attestation ID', 'description': 'Attestation ID of the credential used to generate the commitment' },
-            'dg1': { 'type': 'array', 'label': 'DG1', 'description': 'Data group 1 of the passport', 'length': 93 },
+            'dg1': { 'type': 'text', 'label': 'DG1', 'description': 'Data group 1 of the passport', 'length': 93 },
             'eContent_shaBytes_packed_hash': { 'type': 'number', 'label': 'eContent SHA Bytes Packed Hash', 'description': 'Hash of the eContent packed' },
             'dsc_tree_leaf': { 'type': 'number', 'label': 'DSC Tree Leaf', 'description': 'Leaf of the DSC tree, to keep a record of the full CSCA and DSC that were used' },
             'merkle_root': { 'type': 'number', 'label': 'Merkle Root', 'description': 'Root of the commitment merkle tree' },
             'leaf_depth': { 'type': 'number', 'label': 'Leaf Depth', 'description': 'Actual size of the merkle tree' },
-            'path': { 'type': 'array', 'label': 'Path', 'description': 'Path of the commitment in the merkle tree', 'length': 'nLevels' },
-            'siblings': { 'type': 'array', 'label': 'Siblings', 'description': 'Siblings of the commitment in the merkle tree', 'length': 'nLevels' },
+            'path': { 'type': 'text', 'label': 'Path', 'description': 'Path of the commitment in the merkle tree', 'length': 'nLevels' },
+            'siblings': { 'type': 'text', 'label': 'Siblings', 'description': 'Siblings of the commitment in the merkle tree', 'length': 'nLevels' },
             'selector_dg1': { 'type': 'number', 'label': 'Selector DG1', 'description': 'Bitmap used which bytes from the dg1 are revealed' },
             'majority': { 'type': 'number', 'label': 'Majority', 'description': 'Majority user wants to prove he is older than: YY — ASCII' },
             'current_date': { 'type': 'number', 'label': 'Current Date', 'description': 'Current date: YYMMDD — number' },
             'selector_older_than': { 'type': 'number', 'label': 'Selector Older Than', 'description': 'Bitmap used to reveal the majority' },
-            'forbidden_countries_list': { 'type': 'array', 'label': 'Forbidden Countries List', 'description': 'Forbidden countries list user wants to prove he is not from', 'length': 'MAX_FORBIDDEN_COUNTRIES_LIST_LENGTH' },
+            'forbidden_countries_list': { 'type': 'text', 'label': 'Forbidden Countries List', 'description': 'Forbidden countries list user wants to prove he is not from', 'length': 'MAX_FORBIDDEN_COUNTRIES_LIST_LENGTH' },
             'smt_leaf_key': { 'type': 'number', 'label': 'SMT Leaf Key', 'description': 'Value of the leaf of the SMT corresponding to his path' },
             'smt_root': { 'type': 'number', 'label': 'SMT Root', 'description': 'Root of the SMT' },
-            'smt_siblings': { 'type': 'array', 'label': 'SMT Siblings', 'description': 'Siblings of the SMT', 'length': 'nLevels' },
+            'smt_siblings': { 'type': 'text', 'label': 'SMT Siblings', 'description': 'Siblings of the SMT', 'length': 'nLevels' },
             'selector_ofac': { 'type': 'number', 'label': 'Selector OFAC', 'description': 'Bitmap used to reveal the OFAC verification result' },
             'scope': { 'type': 'number', 'label': 'Scope', 'description': 'Scope of the application users generates the proof for' },
             'user_identifier': { 'type': 'number', 'label': 'User Identifier', 'description': 'User identifier — address or UUID' }
@@ -120,8 +120,8 @@ CIRCUITS_DICT = {
             'refund': { 'type': 'number', 'label': 'Refund', 'description': 'Refund amount' },
             'nullifier': { 'type': 'number', 'label': 'Nullifier', 'description': 'Private nullifier input' },
             'secret': { 'type': 'number', 'label': 'Secret', 'description': 'Private secret input' },
-            'pathElements': { 'type': 'array', 'label': 'Path Elements', 'description': 'Elements of the Merkle tree path', 'length': 'levels' },
-            'pathIndices': { 'type': 'array', 'label': 'Path Indices', 'description': 'Indices of the Merkle tree path', 'length': 'levels' }
+            'pathElements': { 'type': 'text', 'label': 'Path Elements', 'description': 'Elements of the Merkle tree path', 'length': 'levels' },
+            'pathIndices': { 'type': 'text', 'label': 'Path Indices', 'description': 'Indices of the Merkle tree path', 'length': 'levels' }
         },
 
         "outputs": {
@@ -139,23 +139,23 @@ CIRCUITS_DICT = {
         "entry_point": "email-verifier.circom",
         "use_case": "Verifies email signature as per DKIM standard",
         "inputs" : {
-            'emailHeader': { 'type': 'array', 'label': 'Email Header', 'description': 'Email headers that are signed (ones in `DKIM-Signature` header) as ASCII int[], padded as per SHA-256 block size', 'length': 'maxHeadersLength' },
+            'emailHeader': { 'type': 'text', 'label': 'Email Header', 'description': 'Email headers that are signed (ones in `DKIM-Signature` header) as ASCII int[], padded as per SHA-256 block size', 'length': 'maxHeadersLength' },
             'emailHeaderLength': { 'type': 'number', 'label': 'Email Header Length', 'description': 'Length of the email header including the SHA-256 padding' },
-            'pubkey': { 'type': 'array', 'label': 'Public Key', 'description': 'RSA public key split into k chunks of n bits each', 'length': 'k' },
-            'signature': { 'type': 'array', 'label': 'Signature', 'description': 'RSA signature split into k chunks of n bits each', 'length': 'k' },
-            'emailBody': { 'type': 'array', 'label': 'Email Body', 'description': 'Email body after the precomputed SHA as ASCII int[], padded as per SHA-256 block size', 'length': 'maxBodyLength' },
+            'pubkey': { 'type': 'text', 'label': 'Public Key', 'description': 'RSA public key split into k chunks of n bits each', 'length': 'k' },
+            'signature': { 'type': 'text', 'label': 'Signature', 'description': 'RSA signature split into k chunks of n bits each', 'length': 'k' },
+            'emailBody': { 'type': 'text', 'label': 'Email Body', 'description': 'Email body after the precomputed SHA as ASCII int[], padded as per SHA-256 block size', 'length': 'maxBodyLength' },
             'emailBodyLength': { 'type': 'number', 'label': 'Email Body Length', 'description': 'Length of the email body including the SHA-256 padding' },
             'bodyHashIndex': { 'type': 'number', 'label': 'Body Hash Index', 'description': 'Index of the body hash `bh` in the emailHeader' },
-            'precomputedSHA': { 'type': 'array', 'label': 'Precomputed SHA', 'description': 'Precomputed SHA-256 hash of the email body till the bodyHashIndex', 'length': 32 },
-            'decodedEmailBodyIn': { 'type': 'array', 'label': 'Decoded Email Body In', 'description': 'Decoded email body without soft line breaks', 'length': 'maxBodyLength' },
-            'mask': { 'type': 'array', 'label': 'Mask', 'description': 'Mask for the email body', 'length': 'maxBodyLength' }
+            'precomputedSHA': { 'type': 'text', 'label': 'Precomputed SHA', 'description': 'Precomputed SHA-256 hash of the email body till the bodyHashIndex', 'length': 32 },
+            'decodedEmailBodyIn': { 'type': 'text', 'label': 'Decoded Email Body In', 'description': 'Decoded email body without soft line breaks', 'length': 'maxBodyLength' },
+            'mask': { 'type': 'text', 'label': 'Mask', 'description': 'Mask for the email body', 'length': 'maxBodyLength' }
         },
 
         "outputs" : {
             'pubkeyHash': { 'type': 'number', 'label': 'Public Key Hash', 'description': 'Poseidon hash of the pubkey - Poseidon(n/2)(n/2 chunks of pubkey with k*2 bits per chunk)' },
-            'decodedEmailBodyOut': { 'type': 'array', 'label': 'Decoded Email Body Out', 'description': 'Decoded email body with soft line breaks removed', 'length': 'maxBodyLength' },
-            'maskedHeader': { 'type': 'array', 'label': 'Masked Header', 'description': 'Masked email header', 'length': 'maxHeadersLength' },
-            'maskedBody': { 'type': 'array', 'label': 'Masked Body', 'description': 'Masked email body', 'length': 'maxBodyLength' }
+            'decodedEmailBodyOut': { 'type': 'text', 'label': 'Decoded Email Body Out', 'description': 'Decoded email body with soft line breaks removed', 'length': 'maxBodyLength' },
+            'maskedHeader': { 'type': 'text', 'label': 'Masked Header', 'description': 'Masked email header', 'length': 'maxHeadersLength' },
+            'maskedBody': { 'type': 'text', 'label': 'Masked Body', 'description': 'Masked email body', 'length': 'maxBodyLength' }
         },
 
         "parameters" :{

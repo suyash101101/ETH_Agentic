@@ -1,7 +1,7 @@
 pragma circom 2.1.0;
 
 include "./utils.circom";
-include "../node_modules/circomlib/circuits/poseidon.circom";
+include "./circomlib/circuits/poseidon.circom";
 
 template RLN(DEPTH, LIMIT_BIT_SIZE) {
     // Private signals
