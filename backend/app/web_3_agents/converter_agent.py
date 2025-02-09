@@ -312,16 +312,16 @@ def register_basename(basename: str, amount: float = 0.002):
 class Web3Converter:
     def __init__(self):
         self.functions = {
-            "create_token": "Create a new ERC-20 token with a specified name, symbol, and initial supply.",
-            "transfer_asset": "Transfer an asset to a specific address, checking balances and handling gasless transfers.",
-            "get_balance": "Get the balance of a specific asset in the agent's wallet.",
-            "request_eth_from_faucet": "Request ETH from the Base Sepolia testnet faucet.",
-            "generate_art": "Generate art using DALL-E based on a text prompt.",
-            "deploy_nft": "Deploy an ERC-721 NFT contract with a specified name, symbol, and base URI.",
-            "mint_nft": "Mint an NFT to a specified address from a given contract.",
-            "swap_assets": "Swap one asset for another using the trade function, available only on Base Mainnet.",
-            "create_register_contract_method_args": "Create registration arguments for Basenames.",
-            "register_basename": "Register a basename for the agent's wallet."
+            # "create_token": "Create a new ERC-20 token with a specified name, symbol, and initial supply.",
+            # "transfer_asset": "Transfer an asset to a specific address, checking balances and handling gasless transfers.",
+            "get_balance": "Get the balance of a specific asset in the agent's wallet."
+            # "request_eth_from_faucet": "Request ETH from the Base Sepolia testnet faucet.",
+            # "generate_art": "Generate art using DALL-E based on a text prompt.",
+            # "deploy_nft": "Deploy an ERC-721 NFT contract with a specified name, symbol, and base URI.",
+            # "mint_nft": "Mint an NFT to a specified address from a given contract.",
+            # "swap_assets": "Swap one asset for another using the trade function, available only on Base Mainnet.",
+            # "create_register_contract_method_args": "Create registration arguments for Basenames.",
+            # "register_basename": "Register a basename for the agent's wallet."
         }
         self.toolkit = {
             "create_token": create_token,
@@ -361,10 +361,11 @@ class Web3Converter:
         for funcs in run.content.functions:
             tool = []
             for func in funcs.function:
-                if func in self.toolkit:
-                    tool.append(self.toolkit[func])
-                else:
-                    print(f"Warning: Function '{func}' not found in toolkit.")
+                tool.append(func)
+        #         if func in self.toolkit:
+        #             tool.append(self.toolkit[func])
+        #         else:
+        #             print(f"Warning: Function '{func}' not found in toolkit.")
             self.functions.append(tool)
 
 # if __name__ == "__main__":
