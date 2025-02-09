@@ -1,15 +1,20 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <button 
+    <motion.button 
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={() => loginWithRedirect()}
-      className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg font-semibold rounded-xl hover:scale-105 transition-all duration-300 shadow-lg shadow-cyan-500/20"
+      className="group px-10 py-4 bg-blue-500/10 hover:bg-blue-500/15 text-white text-sm tracking-[0.12em] uppercase font-light font-['Inter'] rounded-full transition-all duration-300 border border-blue-500/10 flex items-center gap-3"
     >
-      Get Started
-    </button>
+      Bring Your App On Chain
+      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform opacity-60" />
+    </motion.button>
   );
 };
 
