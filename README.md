@@ -3,10 +3,23 @@
 
 <img width="80" height="80" alt="Screenshot 2025-02-09 at 9 57 16 PM" src="https://github.com/user-attachments/assets/c507332b-0e01-4a80-8df5-16088e3aba84" />
 
-Analyze apps, suggest blockchain features, and provide easy-to-use embeddable tags. Simplify integration of crypto, ZK proofs, and protocols for developers.
+Analyze apps, suggest blockchain features, and provide easy-to-use embeddable tags. Simplify integration of crypto, ZK proofs, and protocols for developers. <br>
 <img width="1468" alt="Screenshot 2025-02-09 at 9 57 16 PM" src="https://github.com/user-attachments/assets/d37ee16b-8e57-4bcc-a4b3-65a65453ac52" />
-<img width="1464" alt="Screenshot 2025-02-09 at 9 58 30 PM" src="https://github.com/user-attachments/assets/1dc4688c-61ac-43f9-b82e-ef42f19eebec" />
 
+## Demo
+
+Check out our demo [DEMO](https://app.supademo.com/demo/cm6xumd9g0act3wrqv4j4inm0/)
+
+
+## 🛠️ Technology Stack
+
+![Python](https://img.shields.io/badge/Backend-Python-3776AB?style=for-the-badge&logo=python)
+![FastAPI](https://img.shields.io/badge/Framework-FastAPI-009688?style=for-the-badge&logo=fastapi)
+![Web3.py](https://img.shields.io/badge/Blockchain-Web3.py-3C3C3D?style=for-the-badge&logo=ethereum)
+![EigenLayer](https://img.shields.io/badge/Protocol-EigenLayer-2D9CDB?style=for-the-badge)
+![Solidity](https://img.shields.io/badge/Smart%20Contracts-Solidity-363636?style=for-the-badge&logo=solidity)
+![OpenZeppelin](https://img.shields.io/badge/Security-OpenZeppelin-4E5EE4?style=for-the-badge)
+![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-4285F4?style=for-the-badge&logo=google)
 
 ## Table of Contents
 
@@ -75,9 +88,7 @@ frontend/
 - **Privacy Enhancements:** Use **ZK proofs** for **anonymous verification**.
 - **Token-Based Features:** Implement **ERC-20 staking**, **NFT minting**, or **DAO voting**.
 
-## Demo
 
-Check out our demo [Demo](https://app.supademo.com/demo/cm6xumd9g0act3wrqv4j4inm0/)
 
 ## Conclusion
 
