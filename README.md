@@ -1,6 +1,12 @@
 # BlockBlend: AI-powered tool bridging Web2 and Web3.
 
+
+<img width="1468" alt="Screenshot 2025-02-09 at 9 57 16 PM" src="https://github.com/user-attachments/assets/c507332b-0e01-4a80-8df5-16088e3aba84" />
+
 Analyze apps, suggest blockchain features, and provide easy-to-use embeddable tags. Simplify integration of crypto, ZK proofs, and protocols for developers.
+<img width="1468" alt="Screenshot 2025-02-09 at 9 57 16 PM" src="https://github.com/user-attachments/assets/d37ee16b-8e57-4bcc-a4b3-65a65453ac52" />
+<img width="1464" alt="Screenshot 2025-02-09 at 9 58 30 PM" src="https://github.com/user-attachments/assets/1dc4688c-61ac-43f9-b82e-ef42f19eebec" />
+
 
 ## Table of Contents
 
