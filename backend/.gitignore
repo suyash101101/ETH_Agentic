@@ -3,3 +3,4 @@ pycache
 venv
 __pycache__
 wallet_storage
+user_data

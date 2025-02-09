@@ -3,10 +3,12 @@ from pydantic import BaseModel
 from typing import List, Dict, Optional
 # from ...web_3_agents.state import agent_state
 from ...web_3_agents.main import Web3AgentManager
+import json  # Import json module
+import os  # Import os module for file path handling
 
-router = APIRouter(prefix="/web3", tags=["web3"])
+router = APIRouter(prefix="/web3_manager/{user_id}", tags=["web3"])
 
-agent_manager = Web3AgentManager()
+agent_manager = Web3AgentManager(user_id="{user_id}")
 # 
 # Request/Response Models
 class PromptRequest(BaseModel):
@@ -16,11 +18,14 @@ class AgentRunRequest(BaseModel):
     agent_index: int = 0
     prompt: str
     wallet_id: str
+    functions: List[str]
+
 class AgentResponse(BaseModel):
     name: str
     functions: List[str]
     wallet_address: str
-    wallet_id: str
+    wallet_id: Optional[str] = None
+    user_id: str
 
 class CreateAgentsResponse(BaseModel):
     success: bool
@@ -36,6 +41,7 @@ class RunAgentResponse(BaseModel):
 @router.post("/create-agents", response_model=CreateAgentsResponse)
 async def create_agents(
     request: PromptRequest,
+    user_id: str
 ):
     try:
         agents = agent_manager.create_agents(request.prompt)
@@ -46,11 +52,23 @@ async def create_agents(
                 name=f"agent{i+1}",
                 functions=agent.function_names,
                 wallet_address=agent._get_wallet_address(),
-                wallet_id=agent.wallet_id # Always send the wallet_id back to the frontend
+                wallet_id=agent.wallet_id,  # Always send the wallet_id back to the frontend
+                user_id=f"{user_id}"  # Include user_id in the response
             )
             for i, agent in enumerate(agents)
         ]
         
+        # Define the directory and file path
+        dir_path = f"user_data"
+        file_path = os.path.join(dir_path, f"{user_id}.json")
+
+        # Create the directory if it doesn't exist
+        os.makedirs(dir_path, exist_ok=True)
+
+        # Save agent_responses to a JSON file
+        with open(file_path, "w") as json_file:
+            json.dump([response.dict() for response in agent_responses], json_file)
+
         return CreateAgentsResponse(
             success=True,
             message=f"Created {len(agents)} agents",
@@ -62,19 +80,30 @@ async def create_agents(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/agents", response_model=List[AgentResponse])
-async def get_agents():
+async def get_agents(user_id: str):
     try:
-        agents = agent_manager.get_agents()
-        print(f"Getting agents from manager {id(agent_manager)}: {len(agents)} agents")
+        # Define the directory and file path
+        dir_path = f"user_data"
+        file_path = os.path.join(dir_path, f"{user_id}.json")
+
+        # Check if the file exists
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail="No agents found for this user.")
+
+        with open(file_path, "r") as json_file:
+            agents_data = json.load(json_file)
+
+        print(f"Getting agents from JSON file for user {user_id}: {len(agents_data)} agents")
         
         responses = [
             AgentResponse(
-                name=f"agent{i+1}",
-                functions=agent.function_names,
-                wallet_address=agent._get_wallet_address(),
-                wallet_id=agent.wallet_id # Always send the wallet_id back to the frontend
+                name=agent['name'],
+                functions=agent['functions'],
+                wallet_address=agent['wallet_address'],
+                wallet_id=agent['wallet_id'],
+                user_id=agent['user_id']
             )
-            for i, agent in enumerate(agents)
+            for agent in agents_data
         ]
         print(f"Returning {len(responses)} agent responses")
         return responses
@@ -85,10 +114,11 @@ async def get_agents():
 
 @router.post("/run-agent", response_model=RunAgentResponse)
 async def run_agent(
-    request: AgentRunRequest
+    request: AgentRunRequest,
+    user_id: str
 ):
     try:
-        result = agent_manager.run_agent(request.wallet_id, request.agent_index, request.prompt)
+        result = agent_manager.run_agent(request.functions, request.wallet_id, request.agent_index, request.prompt)
         return RunAgentResponse(
             success=True,
             result=result

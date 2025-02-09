@@ -3,12 +3,29 @@ from .onchain_agent import OnChainAgents, load_agent, ask_agent
 from typing import List, Optional
 
 class Web3AgentManager:
-    def __init__(self):
+    def __init__(self, user_id: str):
+        self.user_id = user_id
         self.web3_converter = Web3Converter()
         self.agents: List[OnChainAgents] = []
         self._instance_id = id(self)
         print(f"Initialized Web3AgentManager with ID: {self._instance_id}")
         
+    def initialize_agents(self, function_names: List[str], wallet_id: Optional[str] = None) -> OnChainAgents:
+        """Initialize agents based on wallet_id, function_names, and optionally wallet_address"""
+        self.agents = []
+        if wallet_id:
+            # Load existing agent using wallet_address
+            agent = load_agent(wallet_id=wallet_id, functions=function_names)
+            agent.wallet_id = wallet_id
+            print(f"Initialized existing agent with wallet address: {wallet_id}")
+        else:
+            # Create a new agent
+            agent = load_agent(functions=function_names)
+            print(f"Initialized new agent with wallet ID: {wallet_id} and functions: {function_names}")
+
+        self.agents.append(agent)
+        return agent
+
     def create_agents(self, prompt: str) -> List[OnChainAgents]:
         """Create agents based on the prompt"""
         try:
@@ -16,8 +33,6 @@ class Web3AgentManager:
             self.web3_converter.run(prompt)
             agent_counter = 1
             
-            # Get the functions from the converter response
-            # functions = self.web3_converter.functions
             functions = self.web3_converter.functions
             print(f"\nAvailable functions for manager {self._instance_id}:", functions)
             
@@ -26,28 +41,11 @@ class Web3AgentManager:
             
             for func_list in functions:
                 try:
-                    # Handle both single function and multiple functions
                     if isinstance(func_list, list):
                         agent_name = f"agent{agent_counter}"
-                        
-                        if len(func_list) == 1:
-                            # Single function case
-                            print(f"\nCreating {agent_name} with function: {func_list[0]}")
-                            agent = load_agent(functions=func_list)
-                            wallet_address = agent._get_wallet_address()
-                            agent.function_names = [func_list[0]]
-                        else:
-                            # Multiple functions case
-                            function_names = [f for f in func_list]
-                            print(f"\nCreating {agent_name} with functions: {function_names}")
-                            agent = load_agent(functions=func_list)
-                            wallet_address = agent._get_wallet_address()
-                            agent.function_names = function_names
-                        
-                        print(f"{agent_name} created successfully with wallet address: {wallet_address}")
+                        # Create a new agent without a wallet address
+                        self.initialize_agents(function_names=func_list)
                         agent_counter += 1
-                        self.agents.append(agent)
-                            
                 except Exception as e:
                     print(f"Error creating agent: {str(e)}")
                     continue
@@ -59,14 +57,10 @@ class Web3AgentManager:
             print(f"Error in create_agents: {str(e)}")
             raise
     
-    def run_agent(self, wallet_id: str, agent_index: int, prompt: str) -> str:
+    def run_agent(self, functions:List[str], wallet_id: str, agent_index: int, prompt: str) -> str:
         """Run a specific agent with the given prompt"""
-        if 0 <= agent_index < len(self.agents):
-            print(f"Running agent {agent_index} with prompt: {prompt}")
-            print(f"Agent functions: {self.agents[agent_index].function_names}")
-            
-            return ask_agent(self.agents[agent_index], prompt)
-        raise IndexError("Agent index out of range")
+        agent = self.initialize_agents(function_names=functions, wallet_id=wallet_id)            
+        return ask_agent(agent, prompt)
     
     def get_agents(self) -> List[OnChainAgents]:
         """Get all created agents"""

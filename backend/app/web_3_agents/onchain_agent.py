@@ -11,10 +11,6 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-class WalletData(BaseModel):
-    wallet_id: str
-    seed: str
-
 # # Function to get the balance of a specific asset
 # def get_balance(asset_id):
 #     """
