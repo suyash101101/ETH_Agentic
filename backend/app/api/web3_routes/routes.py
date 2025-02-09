@@ -15,10 +15,12 @@ class PromptRequest(BaseModel):
 class AgentRunRequest(BaseModel):
     agent_index: int = 0
     prompt: str
-
+    wallet_id: str
 class AgentResponse(BaseModel):
     name: str
     functions: List[str]
+    wallet_address: str
+    wallet_id: str
 
 class CreateAgentsResponse(BaseModel):
     success: bool
@@ -33,7 +35,7 @@ class RunAgentResponse(BaseModel):
 # Routes
 @router.post("/create-agents", response_model=CreateAgentsResponse)
 async def create_agents(
-    request: PromptRequest
+    request: PromptRequest,
 ):
     try:
         agents = agent_manager.create_agents(request.prompt)
@@ -42,7 +44,9 @@ async def create_agents(
         agent_responses = [
             AgentResponse(
                 name=f"agent{i+1}",
-                functions=agent.function_names
+                functions=agent.function_names,
+                wallet_address=agent._get_wallet_address(),
+                wallet_id=agent.wallet_id # Always send the wallet_id back to the frontend
             )
             for i, agent in enumerate(agents)
         ]
@@ -66,7 +70,9 @@ async def get_agents():
         responses = [
             AgentResponse(
                 name=f"agent{i+1}",
-                functions=agent.function_names
+                functions=agent.function_names,
+                wallet_address=agent._get_wallet_address(),
+                wallet_id=agent.wallet_id # Always send the wallet_id back to the frontend
             )
             for i, agent in enumerate(agents)
         ]
@@ -82,7 +88,7 @@ async def run_agent(
     request: AgentRunRequest
 ):
     try:
-        result = agent_manager.run_agent(request.agent_index, request.prompt)
+        result = agent_manager.run_agent(request.wallet_id, request.agent_index, request.prompt)
         return RunAgentResponse(
             success=True,
             result=result

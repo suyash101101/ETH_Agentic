@@ -34,15 +34,17 @@ class Web3AgentManager:
                             # Single function case
                             print(f"\nCreating {agent_name} with function: {func_list[0]}")
                             agent = load_agent(functions=func_list)
+                            wallet_address = agent._get_wallet_address()
                             agent.function_names = [func_list[0]]
                         else:
                             # Multiple functions case
                             function_names = [f for f in func_list]
                             print(f"\nCreating {agent_name} with functions: {function_names}")
                             agent = load_agent(functions=func_list)
+                            wallet_address = agent._get_wallet_address()
                             agent.function_names = function_names
                         
-                        print(f"{agent_name} created successfully")
+                        print(f"{agent_name} created successfully with wallet address: {wallet_address}")
                         agent_counter += 1
                         self.agents.append(agent)
                             
@@ -57,7 +59,7 @@ class Web3AgentManager:
             print(f"Error in create_agents: {str(e)}")
             raise
     
-    def run_agent(self, agent_index: int, prompt: str) -> str:
+    def run_agent(self, wallet_id: str, agent_index: int, prompt: str) -> str:
         """Run a specific agent with the given prompt"""
         if 0 <= agent_index < len(self.agents):
             print(f"Running agent {agent_index} with prompt: {prompt}")
